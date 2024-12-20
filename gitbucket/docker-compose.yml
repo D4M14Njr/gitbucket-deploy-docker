@@ -1,5 +1,6 @@
+version: '3'
+
 services:
-  
   gitbucket:
     image: ghcr.io/gitbucket/gitbucket:latest
     restart: always
@@ -18,21 +19,24 @@ services:
       - "8080:8080"
     networks:
       - gitbucket-network
-    
-    mysql-gitbucket:
-      image: mysql:5.7
-      restart: always
-      environment:
-        - MYSQL_ROOT_PASSWORD=123123
-        - MYSQL_DATABASE=gitbucket
-        - MYSQL_USER=gitbucket
-        - MYSQL_PASSWORD=123123
-      networks:
-        - gitbucket-network
-      volumes:
-        - mysql-vol-1:/var/lib/mysql/
-        - ./data/conf/mysql:/etc/mysql/conf.d/:ro
+
+  mysql-gitbucket:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123123
+      - MYSQL_DATABASE=gitbucket
+      - MYSQL_USER=gitbucket
+      - MYSQL_PASSWORD=123123
+    networks:
+      - gitbucket-network
+    volumes:
+      - mysql-vol-1:/var/lib/mysql/
+      - ./data/conf/mysql:/etc/mysql/conf.d/:ro
 
 networks:
   gitbucket-network:
     name: gitbucket-network
+
+volumes:
+  mysql-vol-1:
