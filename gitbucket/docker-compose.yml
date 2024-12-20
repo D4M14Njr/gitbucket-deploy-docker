@@ -8,7 +8,7 @@ services:
     restart: always
     container_name: gitbucket
     depends_on:
-      mysql-gitbucket
+      - mysql-gitbucket
     volumes:
       - ./data/repositories/:/srv/gitbucket/repositories/
       - ./data/data/:/srv/gitbucket/data/
@@ -17,6 +17,7 @@ services:
       - ./data/backup/:/srv/gitbucket/backup/
       - ./data/conf/gitbucket/gitbucket.conf:/srv/gitbucket/gitbucket.conf
       - ./data/conf/backup.conf:/srv/gitbucket/backup.conf
+      - ./data/conf/gitbucket/database.conf:/gitbucket/database.conf
     ports:
       - "8080:8080"
     networks:
