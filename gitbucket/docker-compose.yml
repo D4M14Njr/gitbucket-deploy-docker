@@ -33,6 +33,11 @@ services:
     volumes:
       - mysql-vol-1:/var/lib/mysql/
       - ./data/conf/mysql:/etc/mysql/conf.d/:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 networks:
   gitbucket-network:
