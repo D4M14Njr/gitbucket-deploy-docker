@@ -1,0 +1,47 @@
+services:
+  
+  gitbucket:
+    image: pgollor/gitbucket:latest
+    restart: always
+    depends_on:
+      mysql-gitbucket:
+        condition: service_healthy
+    environment:
+      - GITBUCKET_USER_ID=9000
+      - GITBUCKET_DATABASE_HOST=database
+      - GITBUCKET_DATABASE_NAME=gitbucket
+      - GITBUCKET_DATABASE_USER=gitbucket
+      - GITBUCKET_DATABASE_PASSWORD=123123
+    volumes:
+      - ./data/repositories/:/srv/gitbucket/repositories/
+      - ./data/data/:/srv/gitbucket/data/
+      - ./data/gist/:/srv/gitbucket/gist/
+      - ./data/plugins/:/srv/gitbucket/plugins/
+      - ./data/backup/:/srv/gitbucket/backup/
+      - ./data/conf/gitbucket/gitbucket.conf:/srv/gitbucket/gitbucket.conf
+      - ./data/conf/backup.conf:/srv/gitbucket/backup.conf
+    ports:
+      - "8080:8080"
+      - "29418:29418"
+    networks:
+      - gitbucket-network
+    links:
+      - mysql-gitbucket:database
+
+    mysql-gitbucket:
+      image: mariadb:10.3
+      restart: always
+      environment:
+        - MYSQL_ROOT_PASSWORD=123123
+        - MYSQL_DATABASE=gitbucket
+        - MYSQL_USER=gitbucket
+        - MYSQL_PASSWORD=123123
+      networks:
+        - gitbucket-network
+      volumes:
+        - mysql-vol-1:/var/lib/mysql/
+        - ./data/conf/mysql:/etc/mysql/conf.d/:ro
+
+networks:
+  gitbucket-network:
+    name: gitbucket-network
