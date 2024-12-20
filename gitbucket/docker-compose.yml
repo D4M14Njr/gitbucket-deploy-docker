@@ -24,25 +24,21 @@ services:
       - gitbucket-network
 
   mysql-gitbucket:
-    build:
-      context: .
-      dockerfile: Dockerfile.mysqlgitbucket
+    image: mysql:8.0
     container_name: mysql-gitbucket
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=123123
-      - MYSQL_DATABASE=gitbucket
-      - MYSQL_USER=gitbucket
-      - MYSQL_PASSWORD=123123
+      MYSQL_ROOT_PASSWORD: 123123
+      MYSQL_DATABASE: gitbucket
+      MYSQL_USER: gitbucket
+      MYSQL_PASSWORD: 123123
     networks:
       - gitbucket-network
+    ports:
+      - "3306:3306"
     volumes:
-      - mysql-vol-1:/var/lib/mysql/
-      - ./data/conf/mysql:/etc/mysql/conf.d/:ro
+      - ./data/conf/mysql:/etc/mysql/conf.d/
 
 networks:
   gitbucket-network:
     name: gitbucket-network
-
-volumes:
-  mysql-vol-1:
