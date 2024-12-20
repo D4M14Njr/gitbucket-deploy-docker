@@ -2,11 +2,13 @@ version: '3'
 
 services:
   gitbucket:
-    image: ghcr.io/gitbucket/gitbucket:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.gitbucket
     restart: always
+    container_name: gitbucket
     depends_on:
-      mysql-gitbucket:
-        condition: service_healthy
+      mysql-gitbucket
     volumes:
       - ./data/repositories/:/srv/gitbucket/repositories/
       - ./data/data/:/srv/gitbucket/data/
@@ -21,7 +23,10 @@ services:
       - gitbucket-network
 
   mysql-gitbucket:
-    image: mysql:5.7
+    build:
+      context: .
+      dockerfile: Dockerfile.mysqlgitbucket
+    container_name: mysql-gitbucket
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=123123
@@ -33,11 +38,6 @@ services:
     volumes:
       - mysql-vol-1:/var/lib/mysql/
       - ./data/conf/mysql:/etc/mysql/conf.d/:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p$$MYSQL_ROOT_PASSWORD"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 networks:
   gitbucket-network:
