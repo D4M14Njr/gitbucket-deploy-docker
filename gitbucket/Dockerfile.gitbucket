@@ -12,3 +12,8 @@ VOLUME /gitbucket
 EXPOSE 8080 29418
 
 CMD ["sh", "-c", "java -jar /opt/gitbucket.war"]
+
+FROM gitbucket/gitbucket:latest
+
+# Copy logging dependencies
+COPY lib/*.jar /gitbucket/lib/
