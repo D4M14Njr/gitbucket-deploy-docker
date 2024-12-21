@@ -1,6 +1,5 @@
-version: '3'
-
 services:
+
   gitbucket:
     build:
       context: .
@@ -16,7 +15,6 @@ services:
       - ./data/plugins/:/srv/gitbucket/plugins/
       - ./data/backup/:/srv/gitbucket/backup/
       - ./data/conf/gitbucket/gitbucket.conf:/srv/gitbucket/gitbucket.conf
-      - ./data/conf/backup.conf:/srv/gitbucket/backup.conf
       - ./data/conf/gitbucket/database.conf:/gitbucket/database.conf
     ports:
       - "8080:8080"
@@ -34,10 +32,8 @@ services:
       MYSQL_PASSWORD: 123123
     networks:
       - gitbucket-network
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./data/conf/mysql:/etc/mysql/conf.d/
+    # ports:
+    #   - "3306:3306"
 
 networks:
   gitbucket-network:
