@@ -2,21 +2,19 @@ version: '3'
 
 services:
   gitbucket:
-    build:
-      context: .
-      dockerfile: Dockerfile.gitbucket
-    restart: always
+    image: gitbucket/gitbucket
+    # restart: always
     container_name: gitbucket
     depends_on:
       - mysql-gitbucket
     volumes:
-      - ./data/repositories/:/srv/gitbucket/repositories/
-      - ./data/data/:/srv/gitbucket/data/
-      - ./data/gist/:/srv/gitbucket/gist/
-      - ./data/plugins/:/srv/gitbucket/plugins/
-      - ./data/backup/:/srv/gitbucket/backup/
-      - ./data/conf/gitbucket/gitbucket.conf:/srv/gitbucket/gitbucket.conf
-      - ./data/conf/backup.conf:/srv/gitbucket/backup.conf
+      # - ./data/repositories/:/srv/gitbucket/repositories/
+      # - ./data/data/:/srv/gitbucket/data/
+      # - ./data/gist/:/srv/gitbucket/gist/
+      # - ./data/plugins/:/srv/gitbucket/plugins/
+      # - ./data/backup/:/srv/gitbucket/backup/
+      # - ./data/conf/gitbucket/gitbucket.conf:/srv/gitbucket/gitbucket.conf
+      # - ./data/conf/backup.conf:/srv/gitbucket/backup.conf
       - ./data/conf/gitbucket/database.conf:/gitbucket/database.conf
     environment:
       - JAVA_OPTS=-Dorg.slf4j.simpleLogger.defaultLogLevel=debug
@@ -28,7 +26,7 @@ services:
   mysql-gitbucket:
     image: mysql:8.0
     container_name: mysql-gitbucket
-    restart: always
+    # restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 123123
       MYSQL_DATABASE: gitbucket
@@ -36,10 +34,10 @@ services:
       MYSQL_PASSWORD: 123123
     networks:
       - gitbucket-network
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./data/conf/mysql:/etc/mysql/conf.d/
+    # ports:
+    #   - "3306:3306"
+    # volumes:
+    #   - ./data/conf/mysql:/etc/mysql/conf.d/
 
 networks:
   gitbucket-network:
